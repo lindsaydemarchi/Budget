@@ -1,5 +1,3 @@
-#this code is to take CSV credit and debit card statements to organize finances. 
-
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
