@@ -1,10 +1,6 @@
-#this code is to take CSV credit and debit card statements to organize finances. 
-
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-
-
 
 def reading():
 	temp = pd.read_csv('credit.csv', header=3)
@@ -15,14 +11,12 @@ def reading():
 
 	return df, abs(total)
 
-
 def get_categories(dataframe, keywords):
 	sub_dfs = {}
 	for key in keywords:
 		bool_mask = [any([k in d.lower() for k in keywords[key]]) for d in dataframe['Description'].tolist()]
 		sub_dfs[key] = dataframe.loc[bool_mask]
 	return sub_dfs
-
 
 def compare_budget(dataframes, budget, total):
 	total_spent=0
@@ -45,8 +39,6 @@ def plot_budget(dataframes, budget_dict):
 	plt.bar(cat_labels, [cat_totals[l] for l in cat_labels], alpha=0.6)
 	plt.show()
 
-
-
 keywords = {
 	'fun': ['soc', 'puff', 'diner', 'beer'], 
 	'food': ['tech', 'fresh'],
@@ -67,11 +59,7 @@ budget = {
 	'misc': 50.
 }
 
-
-
 df, total = reading()
 sub_dfs = get_categories(df, keywords)
 compare_budget(sub_dfs, budget, total)
 plot_budget(sub_dfs, budget)
-
-
