@@ -40,7 +40,7 @@ def plot_budget(dataframes, budget_dict):
 	plt.show()
 
 keywords = {
-	'fun': ['soc', 'puff', 'diner', 'beer'], 
+	'fun': ['soc', 'puff', 'diner', 'beer'],
 	'food': ['tech', 'fresh'],
 	'coffee': ['coffee', 'cafe', 'intelligentsia'],
 	'travel': ['american'],
