@@ -18,6 +18,11 @@ def get_categories(dataframe, keywords):
 		sub_dfs[key] = dataframe.loc[bool_mask]
 	return sub_dfs
 
+
+def amounts_by_keyword(dataframe, keywords):
+        kw_amounts = {k: abs(dataframe.loc[[k in d.lower() for d in dataframe['Description'].tolist()]]['Amount'].sum()) for k in keywords}
+        return kw_amounts
+
 def compare_budget(dataframes, budget, total):
 	total_spent=0
 	for key in budget:
@@ -30,17 +35,25 @@ def compare_budget(dataframes, budget, total):
 			print('Oops! In your {} budget, you have spent ${:.2f}, which is ${:.2f} over budget.'.format(key, spent, abs(saved)))
 	print('there is {} unaccounted for.'.format(total-total_spent))
 
-def plot_budget(dataframes, budget_dict):
+def plot_budget(dataframes, budget_dict, keyword_dict):
 	cat_totals = {k: abs(v['Amount'].sum()) for k, v in dataframes.items()}
 	cat_labels = [str(k) for k in dataframes]
 
 	fig, ax = plt.subplots()
+        # plot budgeted amounts
 	plt.bar(cat_labels, [budget_dict[l] for l in cat_labels], alpha=0.6)
-	plt.bar(cat_labels, [cat_totals[l] for l in cat_labels], alpha=0.6)
+        # plot spent amounts, broken down first by category then by keyword
+        colors = ['C{}'.format(i) for i in range(1, 10)]
+        for cat in keyword_dict:
+            kw_amounts = amounts_by_keyword(dataframes[cat], keyword_dict[cat])
+            sorted_keys = sorted(kw_amounts, key=lambda x: kw_amounts[x], reverse=True)
+            for i, k in enumerate(sorted_keys):
+                bottom = sum(sorted(kw_amounts.values(), reverse=True)[:i])
+                plt.bar(cat, kw_amounts[k], bottom=bottom, color=colors[i], alpha=0.6)
 	plt.show()
 
 keywords = {
-	'fun': ['soc', 'puff', 'diner', 'beer'], 
+	'fun': ['soc', 'puff', 'diner', 'beer'],
 	'food': ['tech', 'fresh'],
 	'coffee': ['coffee', 'cafe', 'intelligentsia'],
 	'travel': ['american'],
@@ -62,4 +75,6 @@ budget = {
 df, total = reading()
 sub_dfs = get_categories(df, keywords)
 compare_budget(sub_dfs, budget, total)
-plot_budget(sub_dfs, budget)
+
+plot_budget(sub_dfs, budget, keywords)
+
