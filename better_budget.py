@@ -7,7 +7,7 @@ def reading():
 	df = temp.loc[(temp["Category"] == 'DEBIT')]
 
 	total = np.sum(df["Amount"])
-	print('You have spent ${:.2f} this month.'.format(abs(total)))
+	print('You have spent ${:.2f} this month.' . format(abs(total)))
 
 	return df, abs(total)
 
@@ -24,16 +24,16 @@ def amounts_by_keyword(dataframe, keywords):
         return kw_amounts
 
 def compare_budget(dataframes, budget, total):
-	total_spent=0
+	total_spent = 0
 	for key in budget:
 		spent = np.abs(sub_dfs[key]['Amount'].sum())
 		saved = budget[key] - spent
 		total_spent += abs(spent)
 		if saved > 0:
-			print('Of your {} budget, you have spent ${:.2f}, and saved ${:.2f}.'.format(key, spent, saved))
+			print('Of your {} budget, you have spent ${:.2f}, and saved ${:.2f}.' . format(key, spent, saved))
 		else: 
-			print('Oops! In your {} budget, you have spent ${:.2f}, which is ${:.2f} over budget.'.format(key, spent, abs(saved)))
-	print('there is {} unaccounted for.'.format(total-total_spent))
+			print('Oops! In your {} budget, you have spent ${:.2f}, which is ${:.2f} over budget.' . format(key, spent, abs(saved)))
+	print('there is {} unaccounted for.' . format(total - total_spent))
 
 def plot_budget(dataframes, budget_dict, keyword_dict):
 	cat_totals = {k: abs(v['Amount'].sum()) for k, v in dataframes.items()}
